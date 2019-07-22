@@ -1,0 +1,24 @@
+#!/bin/bash
+
+
+#PBS -l nodes=1:ppn=28
+#PBS -l walltime=168:0:0
+#PBS -q long
+#PBS -o /nlustre/users/werner/UKZN/KRISP/Listeria/pipeline/listeria/listeria.out
+#PBS -e /nlustre/users/werner/UKZN/KRISP/Listeria/pipeline/listeria/listeria.err
+#PBS -k oe
+#PBS -m ae
+#PBS -M werner.smidt@gmail.com
+
+
+module load picard-2.17.11
+module load trimmomatic-0.36
+module load samtools-1.7
+module load SPAdes-3.12.0
+module load kraken2
+module load bedtools2
+
+cd /nlustre/users/werner/UKZN/KRISP/Listeria/pipeline/listeria
+
+ls input/ | sed "s/_[1-2].fastq.gz//g" | sort -u |  awk '{print "assemblies/"$0}' | xargs snakemake -n -p --cores 28 2> check.err > check.out
+
