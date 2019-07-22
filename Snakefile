@@ -33,7 +33,7 @@ rule kraken_id:
 		kraken_report="kraken.report/{sample}_report.txt"
 	threads: 2
 	shell:
-		"samtools fastq {input} | kraken2 --db /apps/kraken2/standard --memory-mapping /dev/fd/0 --threads {threads} --report {output.kraken_report} | grep 'Listeria monocytogenes' | cut -f 2 | sed 's/\/[0-9]$//g' | gzip -c  > {output.kraken_classify}"
+		"samtools fastq {input} | kraken2 --db /apps/kraken2/standard --use-names --memory-mapping /dev/fd/0 --threads {threads} --report {output.kraken_report} | grep 'Listeria monocytogenes' | cut -f 2 | sed 's/\/[0-9]$//g' | gzip -c  > {output.kraken_classify}"
 
 rule filter_bam:
 	input:
