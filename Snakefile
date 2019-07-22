@@ -49,11 +49,11 @@ rule spades:
 	input:
 		bam_filtered="bam.filtered/{sample}.bam"
 	output:
-		tmp_fq=temp("/tmp/{sample}_filter.fq.gz")
-		assembly_dir="assemblies/{sample}"
+		tmp_fq=temp("/tmp/{sample}_filter.fq.gz"),
+		assembly_dir=directory("assemblies/{sample}")
 	threads: 4
 	shell:
-		"samtools sort -n {input} | samtools fastq - | gzip -1 -c - > {output.tmp_fq} ; spades.py --12 {output.tmp_fq} --careful -t {threads} -k 55,77,97,127 -o {output} --tmp-dir /tmp"
+		"samtools sort -n {input} | samtools fastq - | gzip -1 -c - > {output.tmp_fq} ; spades.py --12 {output.tmp_fq} --careful -t {threads} -k 55,77,97,127 -o {output.assembly_dir} --tmp-dir /tmp"
 
 rule prokka:
 
