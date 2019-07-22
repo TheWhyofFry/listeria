@@ -21,9 +21,9 @@ rule map_inital:
 		mm_genome_idx="/nlustre/users/werner/UKZN/KRISP/Listeria/NC003210"
 	output:
 	        BAM="bam.initial/{sample}.bam"
-	threads: 1
+	threads: 2
 	shell:
-		"minimap2 -t {threads} -ax sr {input.mm_genome_idx}  {input.FR}  {input.RR} | samtools view -f 1 -F 12 -bu | samtools sort -n -l 1 -o {output}"
+		"minimap2 -t {threads} -ax sr {input.mm_genome_idx}  {input.FR}  {input.RR} | samtools view -f 1 -F 12 -bu | samtools sort -l 1 -o {output}"
 
 rule kraken_id:
 	input:
@@ -49,10 +49,11 @@ rule spades:
 	input:
 		bam_filtered="bam.filtered/{sample}.bam"
 	output:
+		tmp_fq=temp("/tmp/{sample}_filter.fq.gz")
 		assembly_dir="assemblies/{sample}"
 	threads: 4
 	shell:
-		"samtools fastq  {input} | gzip -1 -c - > test.fq.gz ; spades.py --12 test.fq.gz --careful -t {threads} -k 55,77,97,127 -o {output} --tmp-dir /tmp"
+		"samtools sort -n {input} | samtools fastq - | gzip -1 -c - > {output.tmp_fq} ; spades.py --12 {output.tmp_fq} --careful -t {threads} -k 55,77,97,127 -o {output} --tmp-dir /tmp"
 
 rule prokka:
 
