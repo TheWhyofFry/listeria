@@ -43,7 +43,7 @@ rule filter_bam:
 		bam_filtered="bam.filtered/{sample}.bam"
 	threads: 1
 	shell:
-		"picard filterSamReads O={output.bam_filtered} I={input.bam_initial} FILTER=includeReadList READ_LIST_FILE={input.kraken_classify}"
+		"picard FilterSamReads O={output.bam_filtered} I={input.bam_initial} FILTER=includeReadList READ_LIST_FILE={input.kraken_classify}"
 
 rule spades:
 	input:
