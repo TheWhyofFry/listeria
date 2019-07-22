@@ -40,6 +40,14 @@ rule filter_bam:
 	shell:
 		"picard filterSamReads O={output.bam_filtered} I={input.bam_initial} FILTER=includeReadList READ_LIST_FILE={input.kraken_classify}"
 
+rule spades:
+	input:
+		bam_filtered="bam.filtered/{sample}.bam"
+	output:
+		assembly_dir="assemblies/{sample}"
+	shell:
+		"samtools fastq  test.bam | gzip -1 -c - > test.fq.gz ; spades.py --12 test.fq.gz --careful -t 12 -k 55,77,97,127 -o {output}"
+
 
 
 
