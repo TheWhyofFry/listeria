@@ -53,7 +53,7 @@ rule spades:
 		assembly_dir=directory("assemblies/{sample}")
 	threads: 4
 	shell:
-		"samtools sort -n {input} | samtools fastq - | gzip -1 -c - > {output.tmp_fq} ; spades.py --12 {output.tmp_fq} --careful -t {threads} -k 55,77,97,127 -o {output.assembly_dir} --tmp-dir /tmp"
+		"samtools sort -@ {threads} -n {input} | samtools fastq - | gzip -1 -c - > {output.tmp_fq} ; spades.py --12 {output.tmp_fq} --careful -t {threads} -k 55,77,97,127 -o {output.assembly_dir} --tmp-dir /tmp"
 
 rule prokka:
 
