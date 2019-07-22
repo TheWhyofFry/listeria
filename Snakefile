@@ -23,7 +23,7 @@ rule map_inital:
 	        BAM="bam.initial/{sample}.bam"
 	threads: 1
 	shell:
-		"minimap2 -t {threads} -ax sr {input.mm_genome_idx}  {input.FR}  {input.RR} | samtools view -f 1 -F 12 -bu | samtools sort -n -l 1 -o {output}; samtools index {output}"
+		"minimap2 -t {threads} -ax sr {input.mm_genome_idx}  {input.FR}  {input.RR} | samtools view -f 1 -F 12 -bu | samtools sort -n -l 1 -o {output}"
 
 rule kraken_id:
 	input:
