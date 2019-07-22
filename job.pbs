@@ -20,5 +20,5 @@ module load bedtools2
 
 cd /nlustre/users/werner/UKZN/KRISP/Listeria/pipeline/listeria
 
-ls input/ | sed "s/_[1-2].fastq.gz//g" | sort -u |  awk '{print "assemblies/"$0}' | xargs snakemake -n -p --cores 28 2> check.err > check.out
+ls input/ | sed "s/_[1-2].fastq.gz//g" | sort -u |  awk '{print "assemblies/"$0}' | xargs snakemake  -p --cores 28 2> check.err > check.out
 
