@@ -51,9 +51,11 @@ rule spades:
 	output:
 		tmp_fq=temp("/tmp/{sample}_filter.fq.gz"),
 		assembly_dir=directory("assemblies/{sample}")
+		contigs="assemblies/{sample}/contigs.fasta"
 	threads: 4
 	shell:
 		"samtools sort -@ {threads} -n {input} | samtools fastq - | gzip -1 -c - > {output.tmp_fq} ; spades.py --12 {output.tmp_fq} --careful -t {threads} -k 55,77,97,127 -o {output.assembly_dir} --tmp-dir /tmp"
+		" || touch assemblies/{sample}/failed"
 
 rule prokka:
 
